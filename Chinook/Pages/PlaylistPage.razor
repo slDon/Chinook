@@ -70,6 +70,7 @@ else
     [CascadingParameter] private Task<AuthenticationState> authenticationState { get; set; }
     [Inject] IPlayListService playListService { get; set; }
     [Inject] ITrackService trackService { get; set; }
+    [Inject] IBroadcastService broadcastService { get; set; }
     private Modal PlaylistRenameDialog { get; set; }
 
     private Chinook.ClientModels.Playlist Playlist;
@@ -102,6 +103,7 @@ else
         if (existFavoriteList == null)
         {
             existFavoriteList = await playListService.CreatePlayListAsync(CurrentUserId, "My favorite tracks");
+            broadcastService.TriggerNavRefresh();
         }
 
         var track = await trackService.AddTrackToPlayListAsync(existFavoriteList.PlaylistId, trackId);
@@ -137,6 +139,8 @@ else
         var newPlaylist = await playListService.RenamePlayListByIdAsync(PlaylistId, newPlaylistName);
         Playlist.Name = newPlaylist.Name;
         PlaylistRenameDialog.Close();
+        broadcastService.TriggerNavRefresh();
+        newPlaylistName = "";
         StateHasChanged();
     }
 

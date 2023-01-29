@@ -288,10 +288,6 @@ public partial class ChinookContext : IdentityDbContext<ChinookUser>
             entity.ToTable("PlaylistTracks");
             entity.HasKey(bc => new { bc.TrackId, bc.PlaylistId });
 
-            entity.HasIndex(e => e.TrackId, "IFK_PlaylistTrackTrackId");
-            entity.HasOne<Track>().WithMany().HasForeignKey("TrackId").OnDelete(DeleteBehavior.ClientSetNull);
-            entity.HasOne<Playlist>().WithMany().HasForeignKey("PlaylistId").OnDelete(DeleteBehavior.ClientSetNull);
-
             entity.HasOne(up => up.Playlist)
                 .WithMany(u => u.PlaylistTracks)
                 .HasForeignKey(up => up.PlaylistId);

@@ -5,7 +5,6 @@
         public Playlist()
         {
             Tracks = new HashSet<Track>();
-            PlaylistTracks = new HashSet<PlaylistTrack>();
         }
 
         public long PlaylistId { get; set; }

@@ -17,7 +17,9 @@ After you click 'Click here to confirm your account' you should be able to login
 
 
 Complete Tasks
+
 1. Move data retrieval methods to separate class / classes (use dependency injection)
 2. Favorite / unfavorite tracks. An automatic playlist should be created named "My favorite tracks"
 3. Add tracks to a playlist (existing or new one). The dialog is already created but not yet finished.
 6. User should be able to rename the playlist
+4. The user's playlists should be listed in the left navbar. If a playlist is added (or modified), this should reflect in the left navbar. There is already one playlist link in the Nav Menu as an example.

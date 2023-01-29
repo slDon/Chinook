@@ -21,6 +21,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ChinookUser>>();
 
 //adding service to di
+builder.Services.AddScoped<IBroadcastService, BroadcastService>();
 builder.Services.AddScoped<IPlayListService, PlayListService>();
 builder.Services.AddScoped<ITrackService, TrackService>();
 builder.Services.AddScoped<IArtistService, ArtistService>();

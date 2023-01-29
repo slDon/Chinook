@@ -6,7 +6,6 @@
         {
             InvoiceLines = new HashSet<InvoiceLine>();
             Playlists = new HashSet<Playlist>();
-            PlaylistTracks = new HashSet<PlaylistTrack>();
         }
 
         public long TrackId { get; set; }

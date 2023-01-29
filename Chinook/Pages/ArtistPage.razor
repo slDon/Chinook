@@ -65,6 +65,7 @@ else
     [Inject] IArtistService artistService { get; set; }
     [Inject] ITrackService trackService  { get; set; }
     [Inject] IPlayListService playListService { get; set; }
+    [Inject] IBroadcastService broadcastService { get; set; }
     private Modal PlaylistDialog { get; set; }
 
     private Artist? Artist;
@@ -129,9 +130,11 @@ else
         long playlistId = 0;
         if (long.TryParse(selectedPlaylistId, out playlistId))
         {
-            if(playlistId == 0 && string.IsNullOrEmpty(selectedPlaylistName))
+            if(playlistId == 0 && !string.IsNullOrEmpty(selectedPlaylistName))
             {
                 playlistId = playListService.CreatePlayListAsync(CurrentUserId, selectedPlaylistName).Result.PlaylistId;
+                selectedPlaylistName = "";
+                broadcastService.TriggerNavRefresh();
             }
 
             trackService.AddTrackToPlayListAsync(playlistId, SelectedTrack.TrackId).Wait();

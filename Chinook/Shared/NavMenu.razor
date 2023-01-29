@@ -38,6 +38,7 @@
 @code {
     [CascadingParameter] private Task<AuthenticationState> authenticationState { get; set; }
     [Inject] IPlayListService playListService { get; set; }
+    [Inject] IBroadcastService broadcastService { get; set; }
 
     private bool collapseNavMenu = true;
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
@@ -47,11 +48,16 @@
 
     protected override async Task OnInitializedAsync()
     {
+        broadcastService.RegisterNavLinkUpdateCallback(RefreshNavlinks);
         CurrentUserId = await GetUserId();
 
         await InvokeAsync(StateHasChanged);
+    }
 
+    protected override async Task OnParametersSetAsync()
+    {
         Playlists = await playListService.GetPlayListsByUserIdAsync(CurrentUserId);
+        StateHasChanged();
     }
 
     private void ToggleNavMenu()
@@ -64,5 +70,11 @@
         var user = (await authenticationState).User;
         var userId = user.FindFirst(u => u.Type.Contains(ClaimTypes.NameIdentifier))?.Value;
         return userId;
+    }
+
+    private async void RefreshNavlinks(object sender, EventArgs e)
+    {
+        Playlists = await playListService.GetPlayListsByUserIdAsync(CurrentUserId);
+        StateHasChanged();
     }
 }
