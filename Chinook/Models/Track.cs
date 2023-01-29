@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Chinook.Models
+﻿namespace Chinook.Models
 {
     public partial class Track
     {
@@ -9,6 +6,7 @@ namespace Chinook.Models
         {
             InvoiceLines = new HashSet<InvoiceLine>();
             Playlists = new HashSet<Playlist>();
+            PlaylistTracks = new HashSet<PlaylistTrack>();
         }
 
         public long TrackId { get; set; }
@@ -27,5 +25,6 @@ namespace Chinook.Models
         public virtual ICollection<InvoiceLine> InvoiceLines { get; set; }
 
         public virtual ICollection<Playlist> Playlists { get; set; }
+        public virtual ICollection<PlaylistTrack> PlaylistTracks { get; set; }
     }
 }

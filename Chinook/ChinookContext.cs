@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Chinook.Models;
+﻿using Chinook.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chinook;
 
@@ -29,6 +26,7 @@ public partial class ChinookContext : IdentityDbContext<ChinookUser>
     public virtual DbSet<Playlist> Playlists { get; set; } = null!;
     public virtual DbSet<Track> Tracks { get; set; } = null!;
     public virtual DbSet<UserPlaylist> UserPlaylists { get; set; } = null!;
+    public virtual DbSet<PlaylistTrack> PlaylistTracks { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -283,6 +281,24 @@ public partial class ChinookContext : IdentityDbContext<ChinookUser>
             entity.HasOne(up => up.Playlist)
                 .WithMany(u => u.UserPlaylists)
                 .HasForeignKey(up => up.PlaylistId);
+        });
+
+        modelBuilder.Entity<PlaylistTrack>(entity =>
+        {
+            entity.ToTable("PlaylistTracks");
+            entity.HasKey(bc => new { bc.TrackId, bc.PlaylistId });
+
+            entity.HasIndex(e => e.TrackId, "IFK_PlaylistTrackTrackId");
+            entity.HasOne<Track>().WithMany().HasForeignKey("TrackId").OnDelete(DeleteBehavior.ClientSetNull);
+            entity.HasOne<Playlist>().WithMany().HasForeignKey("PlaylistId").OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(up => up.Playlist)
+                .WithMany(u => u.PlaylistTracks)
+                .HasForeignKey(up => up.PlaylistId);
+
+            entity.HasOne(up => up.Track)
+                .WithMany(u => u.PlaylistTracks)
+                .HasForeignKey(up => up.TrackId);
         });
 
         OnModelCreatingPartial(modelBuilder);
