@@ -1,6 +1,8 @@
 using Chinook;
 using Chinook.Areas.Identity;
 using Chinook.Models;
+using Chinook.Services;
+using Chinook.Services.Interfaces;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +19,12 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ChinookUser>>();
+
+//adding service to di
+builder.Services.AddScoped<IPlayListService, PlayListService>();
+builder.Services.AddScoped<ITrackService, TrackService>();
+builder.Services.AddScoped<IArtistService, ArtistService>();
+builder.Services.AddScoped<IAlbumService, AlbumService>();
 
 var app = builder.Build();
 
